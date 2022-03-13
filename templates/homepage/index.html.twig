@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Hello, {{ app.user.username }} (<a href="{{ path('app_logout') }}">Logout</a>)</h2>
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <table class="table table-hover mt-5">
+        <thead>
+        <tr>
+            <th>List of users</th>
+        </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+                <a href="{{ path('app_user_enable', {id: user.id}) }}" class="btn btn-primary
+                    {% if 'ROLE_DISABLED' not in user.roles %}disabled{% endif %}">Enable
+                </a>
+            </td>
+            <td>
+                <a href="{{ path('app_user_disable', {id: user.id}) }}" class="btn btn-danger
+                    {% if 'ROLE_DISABLED' in user.roles %}disabled{% endif %}">Disable
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if user_count > results_per_page %}
+        <ul class="pagination">
+            {% set page_count = (user_count / results_per_page)|round(0, 'ceil') %}
+            {% for i in 1..page_count %}
+                <li><a href="{{ path('app_home', {page: i}) }}">{{ i }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

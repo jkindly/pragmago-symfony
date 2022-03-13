@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block title %}Login{% endblock %}
+{% block body %}
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <h2>Login</h2>
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <form action="{{ path('app_login') }}" method="post">
+                <input type="text" id="username" class="fadeIn second" name="_username" placeholder="login"
+                       value="{{ last_username }}">
+                <input type="password" id="password" class="fadeIn third" name="_password" placeholder="password">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <input type="submit" class="fadeIn fourth" value="Log In">
+            </form>
+            <div id="formFooter">
+                <a class="underlineHover" href="{{ path('app_register') }}">Create new account</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
